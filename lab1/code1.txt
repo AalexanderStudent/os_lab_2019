@@ -1,0 +1,49 @@
+1.1
+cd /projects/AalexanderStudent-os_lab_2019/lab1
+
+скрипт background.sh в фоновом режиме с выводом в текстовый файл output.txt
+(можно проверить работу через top)
+./src/background.sh > ./src/output.txt &
+
+вывод этого файла 
+cat ./src/output.txt
+
+clear
+
+вывод числа символов
+wc -m ./src/output.txt
+
+
+1.2
+запись всех строчек с "cake" (регистр не важен) в with_cake.txt
+grep -wi "cAke" ./src/cake_rhymes.txt > ./src/with_cake.txt
+
+Попытка удалить директорию. Без -R выдаст ошибку, которая уйдёт в /dev/null (через 2>)
+mkdir anotherdir
+rm anotherdir 1>/dev/null 2>/dev/null
+
+1.3
+ls ./src/ -l
+Показывает, что файл уже исполняемый 
+
+Всё владельцу
+chmod u+rwx ./src/hello.sh
+
+./src/hello.sh
+
+После создания script. Права: всем разрешено все.
+chmod 777 ./src/script
+
+./src/script
+
+1.4
+Создание файла
+touch ./src/numbers.txt
+
+150 рандомных чисел, добавляются подряд в конец файла
+for i in {1..150} ; do od -An -N2 -i /dev/random >> ./src/numbers.txt; done
+
+Всё владельцу
+chmod u+rwx ./src/average.sh
+
+./src/average.sh ./src/numbers.txt
