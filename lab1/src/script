@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "Current directory: $PWD"
+strdt=`date +"%m-%d-%Y  %T"`
+echo "Datetime: $strdt"
+echo PATH: $PATH
