@@ -1,0 +1,35 @@
+Создание папки для хранения результатов
+
+cd AalexanderStudent-os_lab_2019/lab2
+touch results.txt
+
+2.1
+gcc -o ./src/swapsolution ./src/swap/main.c ./src/swap/swap.c
+./src/swapsolution > results.txt
+
+2.2
+gcc -o ./src/revsolution ./src/revert_string/main.c ./src/revert_string/revert_string.c
+./src/revsolution Palindrome: >> results.txt
+./src/revsolution "Was i tac a ro rac a tI saw" >> results.txt
+
+
+2.3
+mkdir ./src/libraries
+mkdir ./src/libraries/static
+mkdir ./src/libraries/shared
+
+Дальше всё по инструкции
+
+gcc -c ./src/revert_string/main.c  -o ./src/libraries/main.o
+
+gcc -c ./src/revert_string/revert_string.c -o ./src/libraries/static/revert_string.o
+ar rcs ./src/libraries/static/librevert_string.a ./src/libraries/static/revert_string.o
+gcc ./src/libraries/main.o -L./src/libraries/static -lrevert_string -o ./src/libraries/static/statically-linked
+
+./src/libraries/static/statically-linked "normative epistemology" >> results.txt
+
+
+gcc -c -fPIC ./src/revert_string/revert_string.c -o ./src/libraries/shared/revert_string.o
+gcc -shared ./src/libraries/shared/revert_string.o -o ./src/libraries/shared/libshared.so
+gcc ./src/libraries/main.o -L./src/libraries/shared -lshared -o ./src/libraries/shared/shared-library
+LD_LIBRARY_PATH=$(pwd)/src/libraries/shared ./src/libraries/shared/shared-library Majoritarianism >> results.txt 
