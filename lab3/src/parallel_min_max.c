@@ -32,28 +32,33 @@ int main(int argc, char **argv) {
 
     int option_index = 0;
     int c = getopt_long(argc, argv, "f", options, &option_index);
-
-    if (c == -1) break;
+	if (c == -1) break;
 
     switch (c) {
       case 0:
         switch (option_index) {
-          case 0:
+        case 0:
             seed = atoi(optarg);
-            // your code here
-            // error handling
+            if (seed <= 0) {
+                printf("seed must be a positive number\n");
+                return 1;
+            }
             break;
-          case 1:
+		case 1:
             array_size = atoi(optarg);
-            // your code here
-            // error handling
-            break;
-          case 2:
+            if (array_size <= 0) {
+                printf("array_size must be a positive number\n");
+                 return 1;
+            }
+			break;
+		case 2:
             pnum = atoi(optarg);
-            // your code here
-            // error handling
+            if (pnum <= 0) { 
+                printf("pnum must be a positive number\n");
+                return 1;
+            }
             break;
-          case 3:
+		case 3:
             with_files = true;
             break;
 
@@ -61,18 +66,18 @@ int main(int argc, char **argv) {
             printf("Index %d is out of options\n", option_index);
         }
         break;
-      case 'f':
+	case 'f':
         with_files = true;
         break;
 
-      case '?':
+    case '?':
         break;
 
-      default:
+    default:
         printf("getopt returned character code 0%o?\n", c);
     }
   }
-
+  
   if (optind < argc) {
     printf("Has at least one no option argument\n");
     return 1;
@@ -90,21 +95,38 @@ int main(int argc, char **argv) {
 
   struct timeval start_time;
   gettimeofday(&start_time, NULL);
+  
+  int fds[2];//
+  pipe(fds);
+  int fdlen =  array_size/pnum;
 
   for (int i = 0; i < pnum; i++) {
     pid_t child_pid = fork();
     if (child_pid >= 0) {
-      // successful fork
       active_child_processes += 1;
       if (child_pid == 0) {
-        // child process
-
-        // parallel somehow
-
+		struct MinMax minmax;
+        if (i != pnum - 1) minmax = GetMinMax(array, i * fdlen, (i + 1) * fdlen);
+        else minmax = GetMinMax(array, i * fdlen, array_size);
         if (with_files) {
-          // use files here
+          FILE * file;
+          char* str = (char*)malloc(15*sizeof(char));
+          sprintf(str, "file_%d.txt", i);
+          file = fopen (str, "a");
+          if (file == 0)
+		  {
+			  printf("Couldn't open file to write \n");
+              return 1;
+          }
+		  else
+          {
+              fwrite(&minmax, sizeof(struct MinMax), 1, file);
+          }
+          fclose(file);
+
         } else {
-          // use pipe here
+		  close(fds[0]);
+          write(fds[1], &minmax, sizeof(struct MinMax));
         }
         return 0;
       }
@@ -116,27 +138,43 @@ int main(int argc, char **argv) {
   }
 
   while (active_child_processes > 0) {
-    // your code here
-
     active_child_processes -= 1;
+	wait(NULL);
+    active_child_processes -= 1;
+    close(fds[1]);
   }
 
   struct MinMax min_max;
   min_max.min = INT_MAX;
   min_max.max = INT_MIN;
-
+  
   for (int i = 0; i < pnum; i++) {
-    int min = INT_MAX;
-    int max = INT_MIN;
+    struct MinMax curr;
+    curr.min = INT_MAX;
+    curr.max = INT_MIN;
 
     if (with_files) {
-      // read from files
+      char* str = (char*)malloc(15*sizeof(char));
+      sprintf(str, "file_%d.txt", i);
+      FILE * file = fopen(str,"rt");
+	  if (file == 0)
+	  {
+		  printf("Couldn't open file to read \n");
+		  return 1;
+	  }
+	  else
+	  {
+		  fread(&curr, sizeof(struct MinMax), 1, file);     
+	  }
+	  fclose(file);
+      remove(str);
     } else {
-      // read from pipes
+	  close(fds[1]);
+      read(fds[0], &curr, sizeof(struct MinMax));
     }
 
-    if (min < min_max.min) min_max.min = min;
-    if (max > min_max.max) min_max.max = max;
+    if (curr.min < min_max.min) min_max.min = curr.min;
+    if (curr.max > min_max.max) min_max.max = curr.max;
   }
 
   struct timeval finish_time;
@@ -145,6 +183,11 @@ int main(int argc, char **argv) {
   double elapsed_time = (finish_time.tv_sec - start_time.tv_sec) * 1000.0;
   elapsed_time += (finish_time.tv_usec - start_time.tv_usec) / 1000.0;
 
+  for (int i = 0; i < array_size; i++)
+  {
+	printf("%d \n", array[i]);
+  }
+  printf("\n");
   free(array);
 
   printf("Min: %d\n", min_max.min);
