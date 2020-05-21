@@ -1,0 +1,22 @@
+
+3.1
+cd AalexanderStudent-os_lab_2019/lab3
+gcc -o ./src/findmm1 ./src/sequential_min_max.c ./src/find_min_max.c ./src/utils.c
+./src/findmm1 1 20 > results_3_1.txt
+
+
+3.2 и 3.3
+gcc -o ./src/findmm23 ./src/parallel_min_max.c ./src/find_min_max.c ./src/utils.c
+./src/findmm23 --seed 2 --array_size 20 --pnum 3 --by_file > results_3_2.txt
+./src/findmm23 --seed 3 --array_size 20 --pnum 3  > results_3_3.txt
+В github в parallel_min_max.c некоторые отступы стали выглядеть странно после git push. Не знаю, почему.
+
+
+3.4
+Сейчас target - all
+cd ./src
+make
+
+
+3.5
+make exec_run > /projects/AalexanderStudent-os_lab_2019/lab3/results_3_5.txt
