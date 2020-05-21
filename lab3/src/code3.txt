@@ -1,3 +1,4 @@
+
 3.1
 cd AalexanderStudent-os_lab_2019/lab3
 gcc -o ./src/findmm1 ./src/sequential_min_max.c ./src/find_min_max.c ./src/utils.c
