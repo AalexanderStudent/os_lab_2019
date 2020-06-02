@@ -1,0 +1,32 @@
+cd AalexanderStudent-os_lab_2019/
+mv lab3/src/find_min_max.h lab4/src
+mv lab3/src/find_min_max.c lab4/src
+mv lab3/src/utils.h lab4/src
+mv lab3/src/utils.c lab4/src
+mv lab3/src/parallel_min_max.c lab4/src
+
+
+3.1
+cd lab4/src 
+make parallel_min_max
+cd ../
+./src/parallel_min_max --seed 4 --array_size 20 --pnum 2 >> result4_11.txt
+./src/parallel_min_max --seed 5 --array_size 20 --pnum 2 --timeout 10 >> result4_12.txt
+
+
+3.2
+cd ./src
+make zombie_making
+ps aux
+./zombie_making
+ps aux
+
+3.3
+make process_memory
+cd ../
+./src/process_memory >> result4_3.txt
+
+3.5
+cd ./src
+make parallel_sum
+./parallel_sum --threads_num 4 --seed 7 --array_size 20 >> ../results4_4.txt
