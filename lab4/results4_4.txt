@@ -1,2 +1,0 @@
-Total: 1480983100
-Elapsed time: 0.214000ms

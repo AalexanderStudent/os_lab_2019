@@ -7,6 +7,3 @@ int Sum(const struct SumArgs *args)
     sum += *(args->array+i);
   return sum;
 }
-
-
-

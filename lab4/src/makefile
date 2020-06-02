@@ -27,3 +27,4 @@ sum.o : sum.h sum.c
 
 clean :
 	rm utils.o find_min_max.o parallel_min_max zombie_making process_memory
+
