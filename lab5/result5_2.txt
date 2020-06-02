@@ -1,0 +1,8 @@
+1
+2
+6
+24
+120
+720
+Result: 720 mod 11 = 5
+Elapsed time: 0.281000ms
