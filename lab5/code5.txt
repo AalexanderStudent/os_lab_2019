@@ -1,0 +1,21 @@
+cd AalexanderStudent-os_lab_2019/lab5
+
+5.1
+gcc -o ./src/without_mutex ./src/mutex.c -lpthread 
+./src/without_mutex > restult5_no_mutex.txt
+После того, как я убрал // из файла
+gcc -o ./src/with_mutex ./src/mutex.c -lpthread 
+./src/with_mutex > restult5_mutex.txt
+
+В первом случае две функции пытаются получить доступ к common одновременно, и только одна из них получает его. 
+Во втором они синхронизируются так, чтобы не мешать друг другу.
+
+5.2
+gcc -o ./src/fact ./src/fact.c -lpthread 
+./src/fact --k 6 --pnum=4 --mod=11 > restult5_2.txt
+
+5.3
+gcc -o ./src/deadlock ./src/deadlock_situation.c -lpthread
+./src/deadlock > result5_3.txt
+И дальше того, что выведено в файле результатов, ситуация не продвинется, т.к.
+обе функции ожидают друг друга
