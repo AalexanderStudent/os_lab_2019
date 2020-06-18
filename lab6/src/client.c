@@ -232,7 +232,7 @@ int main(int argc, char **argv)
         total = MultModulo(total, answer, mod);
         close(sck);
     }
-    printf("answer: %llu\n", total);
+    printf("answer: %lu\n", total);
     free(to);
     return 0;
 }
