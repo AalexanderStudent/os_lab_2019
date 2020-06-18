@@ -1,0 +1,17 @@
+В разных терминалах:
+cd AalexanderStudent-os_lab_2019/lab6/src/
+make
+./server --port 20001 --tnum 2 --servers serv.txt
+
+
+cd AalexanderStudent-os_lab_2019/lab6/src/
+./server --port 20001 --tnum 2 --servers serv.txt
+
+
+cd AalexanderStudent-os_lab_2019/lab6/src/
+./server --port 20003 --tnum 2 --servers serv.txt
+
+
+cd AalexanderStudent-os_lab_2019/lab6/src/
+./client --k 10 --mod 4000000 --servers serv.txt > ../result.txt
+
